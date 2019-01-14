@@ -6,7 +6,6 @@
 </template>
 
 <script>
-  import uuid from 'uuid';
   export default {
     name: 'AddTodo',
     data() {
@@ -18,9 +17,8 @@
       addTodo(event) {
         event.preventDefault();
         const newTodo = {
-          id: uuid.v4(),
           title: this.title,
-          complete: false
+          completed: false
         }
         // Send up to parent
         this.$emit('add-todo', newTodo);

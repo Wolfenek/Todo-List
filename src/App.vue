@@ -10,6 +10,7 @@
 import Header from './components/layout/Header';
 import Todos from './components/Todos';
 import AddTodo from './components/AddTodo';
+import axios from 'axios';
 
 export default {
   name: 'app',
@@ -21,32 +22,30 @@ export default {
   data() {
     return {
       // Implementing array of objects:
-      todos: [
-        {
-          id: 1,
-          title: 'Finish basic Vue tutorial',
-          complete: false
-        },
-        {
-          id: 2,
-          title: 'Brush your teeth',
-          complete: false
-        },
-        {
-          id: 3,
-          title: 'Add quantcast to page',
-          complete: false
-        }
-      ]
+      todos: []
     }
   },
   methods: {
     deleteTodoItem(id) {
-      this.todos = this.todos.filter(todoItem => todoItem.id !== id);
+      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then(res => this.todos = this.todos.filter(todoItem => todoItem.id !== id))
+        .catch(err => alert(err));
     },
     addTodo(newTodo) {
-        this.todos = [...this.todos, newTodo];
+      const { title, completed } = newTodo; //destructuring
+
+      axios.post('https://jsonplaceholder.typicode.com/todos?_limit', {
+        title,
+        completed
+      })
+        .then(res => this.todos = [...this.todos, res.data])
+        .catch(err => alert(err));
     }
+  },
+  created() {
+    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=3') // After "?" - sets the limit of items taken from API
+      .then(res => this.todos = res.data)
+      .catch(err => alert(err)); //change this later to something useful
   }
 }
 </script>
