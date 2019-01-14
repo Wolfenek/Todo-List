@@ -34,7 +34,7 @@ export default {
         },
         {
           id: 3,
-          title: 'Add quantcast to page',
+          title: 'Play with your pet',
           complete: false
         }
       ]
